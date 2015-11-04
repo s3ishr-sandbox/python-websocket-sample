@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebSocket Sample</title>
+</head>
+<body>
+  <!-- あとできちんと作りなおす... -->
+  <button onClick="ws.vibration(200)">Vibration!</button>
+
+  <script>
+    // ↓接続先のIPアドレスに修正すること！
+    var ws = new WebSocket("ws://a.b.c.d:8080/ws");
+    ws.onopen = function() {
+      console.log("[WS] Open");
+    }
+    ws.onmessage = function(e) {
+      console.dir(e);
+      window.navigator.vibrate(e.data);
+    }
+    ws.onclose = function() {
+      // todo
+    }
+    ws.vibration = function(msec) {
+      console.log("[WS] Send");
+      ws.send(msec)
+    }
+    vib = function(msec) {
+      window.navigator.vibrate(msec);
+    } 
+  </script>
+</body>
+</html>
