@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Volume Chart</title>
+  <script src="https://raw.githubusercontent.com/joewalnes/smoothie/master/smoothie.js"></script>
+</head>
+<body>
+  <canvas id="chart" width="500px" height="200px">
+
+  <script>
+    var chart  = new SmoothieChart({minValue:0}),
+        canvas = document.getElementById('chart'),
+        series = new TimeSeries();
+
+    chart.addTimeSeries(series, {lineWidth:2, strokeStyle:'#00ff00'});
+    chart.streamTo(canvas, 500);
+  </script>
+
+  <script>
+    // ↓接続先のIPアドレスに修正すること！
+    var ws = new WebSocket("ws://localhost:8080/ws");
+    ws.onopen = function() {
+      console.log("[WS] Open");
+    }
+    ws.onmessage = function(e) {
+      series.append(new Date().getTime(), e.data);
+    }
+    ws.onclose = function() {
+      // todo
+    }
+  </script>
+</body>
+</html>
